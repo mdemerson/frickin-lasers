@@ -1,7 +1,7 @@
 # Works out the power required for the fricken laser beams
 # as per the Australian NBN standards.
 #
-# 0.35 dB loss per kilometre
+# 0.35 dB loss per kilometre (SMOF)
 # 0.10 dB loss per fusion splice
 # 0.30 dB loss per connection
 # 19 dB loss at 32 way splitter (ODF)
@@ -17,23 +17,21 @@ premises = Hash.new
 premises_counter = 1
 
 # Methods
-
 def db_loss(distance, splices, connections)
-  return (distance.to_f * 0.35) + (splices.to_f * 0.10) + (connections.to_f * 0.30)
+  # Perform calculations for 1310nm SMOF
+  return (distance * 0.35) + (splices * 0.10) + (connections * 0.30)
 end
 
 def premises_query(number)
   # Get premises details and put them into 'premises' hash.
   print "What is the fibre distance (in KM's) from the ODF to premises number #{number}? "
-  premises_distance = gets.chomp()
+  premises_distance = gets.to_f
   print "How many splices between the ODF and premises number #{number}? "
-  premises_splices = gets.chomp()
+  premises_splices = gets.to_i
   print "how many connections between the ODF and premises number #{number}? "
-  premises_connections = gets.chomp()
-  #@premises["#{number.to_s}"] = db_loss(premises_distance, premises_splices, premises_connections)
+  premises_connections = gets.to_i
   return db_loss(premises_distance, premises_splices, premises_connections)
 end
-
 
 # Establish how many connections there are going to be.
 print "How many premises are we running fibre to? "
@@ -41,11 +39,11 @@ premises_amount = gets.to_i
 
 # Get backbone details.
 print "What is the distance from the OLT to the ODF (in KM's)? "
-backbone_distance = gets.chomp()
+backbone_distance = gets.to_f
 print "How many splices between OLT and ODF? "
-backbone_splices = gets.chomp()
+backbone_splices = gets.to_i
 print "How many connections are between the OLT and ODF? "
-backbone_connections = gets.chomp()
+backbone_connections = gets.to_i
 
 backbone_db_loss = db_loss(backbone_distance, backbone_splices, backbone_connections) + 0.30 + 19
 
