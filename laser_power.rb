@@ -71,7 +71,7 @@ backbone_connections = gets.to_i
 backbone_db_loss_1310 = db_loss(backbone_distance, 0.35, backbone_splices, backbone_connections) + 19
 backbone_db_loss_1550 = db_loss(backbone_distance, 0.21, backbone_splices, backbone_connections) + 19
 
-# Calls the premises querys
+# Get premises details.
 while premises_counter <= premises_amount
   puts ""
   print "What is the fibre distance (in KM's) from the ODF to premises #{premises_counter}? "
