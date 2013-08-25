@@ -52,6 +52,16 @@ def premises_query(number, wavelength)
   return db_loss(premises_distance, wavelength, premises_splices, premises_connections)
 end
 
+# Convert dBm to mW
+def dbm_to_mw(dbm)
+  return 10 ** (dbm / 10)
+end
+
+# Convert mW to dBm
+def mw_to_dbm(mw)
+  return Math.log10(mw) * 10
+end
+
 
 ###### Program ######
 
