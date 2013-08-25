@@ -132,7 +132,6 @@ premises_1550.each do |number, value|
   total_loss_1550["#{number.to_s}"] = (value + backbone_db_loss_1550).round(2)
 end
 puts ""
-
 # Print out light reading at each premises.
 total_loss_1310.each do |number, value|
   puts "premises #{number} will have a light reading of #{(optimal_light_1310 - value).round(2)} dBm @ 1310nm."
@@ -144,6 +143,6 @@ total_loss_1550.each do |number, value|
 end
 puts ""
 
-# Print out required laser power.
-puts "You will require a laser capable of emitting at least #{dbm_to_mw(optimal_light_1310).round(2)} mW for 1310nm."
-puts "You will require a laser capable of emitting at least #{dbm_to_mw(optimal_light_1550).round(2)} mW for 1550nm."
+# Print out dbm and required laser power.
+puts "Optimal link is #{mw_to_dbm(dbm_to_mw(optimal_light_1310)).round(2)} dBm, and needs a laser capable of #{dbm_to_mw(optimal_light_1310).round(2)}mW @ 1310nm."
+puts "Optimal link is #{mw_to_dbm(dbm_to_mw(optimal_light_1550)).round(2)} dBm, and needs a laser capable of #{dbm_to_mw(optimal_light_1550).round(2)}mW @ 1550nm."
