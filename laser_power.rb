@@ -1,22 +1,10 @@
+#!/usr/bin/ruby
+
 # Works out the power required for the fricken laser beams
 # as per the Australian NBN standards.
 #
-# 0.35 dB loss per kilometre (1310nm SMOF)
-# 0.21 dB loss per kilometre (1550nm SMOF)
-# 0.10 dB loss per fusion splice
-# 0.30 dB loss per connection
-# 19 dB loss at 32 way splitter (ODF)
-#
-# -8  dBm = max light reading
-# -18 dBm = optimal light reading
-# -28 dBm = minimal light reading
-#
 # Mathew Emerson - 24/08/13
 
-# Before we do anything else, find out the wavelength of the fibre.
-# puts "what is the wavelength of your fibre?"
-# print "'a' for 1550nm SMOF any other key for 1310: "
-# wavelength = gets.chomp()
 
 # Create hashes.
 premises_1310 = Hash.new
