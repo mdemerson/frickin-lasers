@@ -21,12 +21,13 @@ wavelength = gets.chomp()
 # Create hashes.
 premises = Hash.new
 worst_case = Hash.new
+total_loss = Hash.new
 
 # Create counters and defaults.
 premises_counter = 1
 worst_case_counter = 0
 wavelength_name = "1550nm"
-
+optimal_light = 0
 
 ###### Methods ######
 
@@ -43,6 +44,7 @@ end
 # Ask questions for each premises.
 def premises_query(number, wavelength)
   # Get premises details and put them into 'premises' hash.
+  puts ""
   print "What is the fibre distance (in KM's) from the ODF to premises #{number}? "
   premises_distance = gets.to_f
   print "How many splices between the ODF and premises #{number}? "
@@ -71,10 +73,12 @@ unless wavelength == "a"
 end
 
 # Establish how many connections there are going to be.
+puts ""
 print "How many premises are we running fibre to? "
 premises_amount = gets.to_i
 
 # Get backbone details.
+puts ""
 print "What is the distance from the OLT to the ODF (in KM's)? "
 backbone_distance = gets.to_f
 print "How many splices between OLT and ODF? "
@@ -98,14 +102,38 @@ premises.each do |number, value|
   end
 end
 
+# Work out the optimal light
+optimal_light = -18 + (worst_case.values.first + backbone_db_loss)
+
 
 ###### Print out the results ######
-puts "" * 5
+
+# Clear screen
+40.times do puts "" end
+
+# A bit of basic info.
 puts "We are using #{wavelength_name} SMOF to go to #{premises_amount} premises."
 puts ""
-puts "OLT to ODF loss is #{backbone_db_loss}."
+puts "OLT to ODF loss is #{backbone_db_loss.round(2)}."
 puts ""
-premises.each {|number, value| puts "premises #{number} has loss of #{value} dB."}
+puts "Premises #{worst_case.keys.first} has the greatest loss, -#{(worst_case.values.first).round(2)} dB (-#{(worst_case.values.first + backbone_db_loss).round(2)} dB total) ."
 puts ""
-puts "premises #{worst_case.keys.first} has the greatest loss (#{worst_case.values.first} dB) and a total loss of #{worst_case.values.first + backbone_db_loss} dB."
 
+# Print out loss from ODF to each premises.
+premises.each do |number, value|
+  puts "premises #{number} has loss of -#{value.round(2)} dB, -#{(value + backbone_db_loss).round(2)} dB total."
+  total_loss["#{number.to_s}"] = (value + backbone_db_loss).round(2)
+end
+
+# Print out light reading at each premises.
+total_loss.each do |number, value|
+  puts ""
+  puts "premises #{number} will have a light reading of #{(optimal_light - value).round(2)} dBm."
+  if (optimal_light - value) > -8
+    puts "*** THIS CONNECTION WILL NEED TO BE ATTENUATED ***"
+  end
+end
+
+# Print out required laser power.
+puts ""
+puts "You will require a laser capable of emitting at least #{dbm_to_mw(optimal_light).round(2)} mW."
