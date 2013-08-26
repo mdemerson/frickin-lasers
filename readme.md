@@ -7,3 +7,24 @@ A small script that works out the optimal laser power required, the dB loss and 
 * 0.10 dB loss per fusion splice
 * 0.30 dB loss per connection
 * 19.0 dB loss at 32 way splitter (ODF)
+
+## Setup
+
+1. Install bundler
+
+````
+gem install bundler
+````
+
+2. Bundle gems
+
+````
+bundle install
+````
+
+3. Run specs
+
+`````
+bundle exec rspec
+`````
+
